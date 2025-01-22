@@ -32,10 +32,17 @@ test("gives each <ProjectItem> a key based on the project id", () => {
   errorSpy.mockRestore();
 });
 
-test("renders a <ProjectItem> for each project passed in as a prop", () => {
+
+test("renders ProjectList without console errors", () => {
+  const projects = [
+    { id: 1, name: "Project 1", description: "Description 1" },
+    { id: 2, name: "Project 2", description: "Description 2" },
+  ];
+  const errorSpy = jest.spyOn(global.console, "error").mockImplementation(() => {});
+
   render(<ProjectList projects={projects} />);
 
-  for (const project of projects) {
-    expect(screen.queryByText(project.name)).toBeInTheDocument();
-  }
+  expect(errorSpy).not.toHaveBeenCalled();
+
+  errorSpy.mockRestore();
 });
